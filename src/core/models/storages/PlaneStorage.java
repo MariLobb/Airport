@@ -33,7 +33,7 @@ public class PlaneStorage extends Storage{
         }
     }
 
-    public ArrayList<Plane> getTransactions() {
+    public ArrayList<Plane> getPlanes() {
         return this.planes;
     }
     

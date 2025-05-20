@@ -33,7 +33,7 @@ public class LocationStorage extends Storage{
         }
     }
 
-    public ArrayList<Location> getTransactions() {
+    public ArrayList<Location> getLocations() {
         return this.locations;
     }
     

@@ -34,7 +34,7 @@ public class PassengerStorage extends Storage{
         }
     }
 
-    public ArrayList<Passenger> getTransactions() {
+    public ArrayList<Passenger> getPassengers() {
         return this.passengers;
     }
     

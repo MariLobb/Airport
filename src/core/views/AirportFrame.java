@@ -8,12 +8,13 @@ import core.models.Plane;
 import core.models.Passenger;
 import core.models.Location;
 import core.models.Flight;
-import com.formdev.flatlaf.FlatDarkLaf;
+import core.controllers.PassengerController;
+import core.controllers.utils.Response;
 import java.awt.Color;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import javax.swing.UIManager;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -1412,7 +1413,7 @@ public class AirportFrame extends javax.swing.JFrame {
 
         }
         for (int i = 1; i < jTabbedPane1.getTabCount(); i++) {
-                jTabbedPane1.setEnabledAt(i, true);
+            jTabbedPane1.setEnabledAt(i, true);
         }
         jTabbedPane1.setEnabledAt(5, false);
         jTabbedPane1.setEnabledAt(6, false);
@@ -1436,20 +1437,43 @@ public class AirportFrame extends javax.swing.JFrame {
 
     private void btnRegisterPassengerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterPassengerActionPerformed
         // TODO add your handling code here:
-        long id = Long.parseLong(txtPassengerId.getText());
+////        long id = Long.parseLong(txtPassengerId.getText());
+////        String firstname = txtFirstName.getText();
+////        String lastname = txtLastName.getText();
+////        int year = Integer.parseInt(txtYear.getText());
+////        int month = Integer.parseInt(cboxMonth.getItemAt(cboxMonth.getSelectedIndex()));
+////        int day = Integer.parseInt(cboxDay.getItemAt(cboxDay.getSelectedIndex()));
+////        int phoneCode = Integer.parseInt(txtPhoneCode.getText());
+////        long phone = Long.parseLong(txtPhoneNumber.getText());
+////        String country = txtCountry.getText();
+//
+//        LocalDate birthDate = LocalDate.of(year, month, day);
+//
+//        this.passengers.add(new Passenger(id, firstname, lastname, birthDate, phoneCode, phone, country));
+//        this.userSelect.addItem("" + id);
+
+        // TODO add your handling code here:
+        String id = txtPassengerId.getText();
         String firstname = txtFirstName.getText();
         String lastname = txtLastName.getText();
-        int year = Integer.parseInt(txtYear.getText());
-        int month = Integer.parseInt(cboxMonth.getItemAt(cboxMonth.getSelectedIndex()));
-        int day = Integer.parseInt(cboxDay.getItemAt(cboxDay.getSelectedIndex()));
-        int phoneCode = Integer.parseInt(txtPhoneCode.getText());
-        long phone = Long.parseLong(txtPhoneNumber.getText());
+        String year = txtYear.getText();
+        String month = cboxMonth.getItemAt(cboxMonth.getSelectedIndex());
+        String day = cboxDay.getItemAt(cboxDay.getSelectedIndex());
+        String phoneCode = txtPhoneCode.getText();
+        String phone = txtPhoneNumber.getText();
         String country = txtCountry.getText();
 
-        LocalDate birthDate = LocalDate.of(year, month, day);
+        Response response = PassengerController.createPassenger(id, firstname, lastname, year, month, day, phoneCode, phone, country);
 
-        this.passengers.add(new Passenger(id, firstname, lastname, birthDate, phoneCode, phone, country));
-        this.userSelect.addItem("" + id);
+        if (response.getStatus() >= 500) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
+        } else if (response.getStatus() >= 400) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
+        }
+
+        
     }//GEN-LAST:event_btnRegisterPassengerActionPerformed
 
     private void btnCreateAirplaneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateAirplaneActionPerformed
@@ -1662,11 +1686,10 @@ public class AirportFrame extends javax.swing.JFrame {
     private void userSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userSelectActionPerformed
         try {
             String id = userSelect.getSelectedItem().toString();
-            if (! id.equals(userSelect.getItemAt(0))) {
+            if (!id.equals(userSelect.getItemAt(0))) {
                 txtUpdateUserId.setText(id);
                 btnAddFlightUserId.setText(id);
-            }
-            else{
+            } else {
                 txtUpdateUserId.setText("");
                 btnAddFlightUserId.setText("");
             }
@@ -1677,7 +1700,6 @@ public class AirportFrame extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton administrator;
