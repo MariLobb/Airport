@@ -9,6 +9,7 @@ import core.controllers.utils.Status;
 import core.models.Plane;
 import core.models.storages.PlaneStorage;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -17,9 +18,11 @@ import java.util.ArrayList;
 public class PlaneController {
 
     public static Response createPlane(String id, String brand, String model, String maxCapacity, String airline) {
+        Pattern ID_PATTERN = Pattern.compile("^[A-Z]{2}\\d{5}$");
         int maxCapacity1;
         PlaneStorage planeStorage = PlaneStorage.getInstance();
         ArrayList<Plane> planes = planeStorage.getPlanes();
+
         try {
             if (id.equals("")) {
                 return new Response("The Id must be not empty.", Status.BAD_REQUEST);
@@ -45,13 +48,17 @@ public class PlaneController {
                     return new Response("A plane with this ID is already registered.", Status.BAD_REQUEST);
                 }
             }
-            // validar forma xxxyyyy
+
+            if (!ID_PATTERN.matcher(id).matches()) {
+                return new Response("Invalid plane ID format found", Status.BAD_REQUEST);
+            }
+
             try {
                 maxCapacity1 = Integer.parseInt(maxCapacity);
             } catch (NumberFormatException e) {
                 return new Response("The maximum Capacity must be numeric.", Status.BAD_REQUEST);
             }
-           
+
             planeStorage.addItem(new Plane(id, brand, model, maxCapacity1, airline));
             return new Response("Plane added successfully", Status.OK);
 

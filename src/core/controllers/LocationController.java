@@ -16,7 +16,7 @@ import java.util.ArrayList;
  */
 public class LocationController {
 
-    public static Response createPlane(String airportId, String airportName, String airportCity, String airportCountry, String airportLatitude, String airportLongitude) {
+    public static Response createLocation(String airportId, String airportName, String airportCity, String airportCountry, String airportLatitude, String airportLongitude) {
         double airportLatitude1;
         double airportLongitude1;
         LocationStorage locationStorage = LocationStorage.getInstance();
