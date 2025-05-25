@@ -15,7 +15,7 @@ import javax.swing.JComboBox;
 
 /**
  *
- * @author Laura
+ * @author fvarelo and mlobol
  */
 public class AddPlaneToComboBox {
    public static Response addItems(JComboBox<String> comboBox) {

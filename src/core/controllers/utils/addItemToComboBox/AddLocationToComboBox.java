@@ -15,7 +15,7 @@ import javax.swing.JComboBox;
 
 /**
  *
- * @author Laura
+ * @author fvarelo and mlobol
  */
 public class AddLocationToComboBox {
 

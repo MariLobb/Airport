@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package core.controllers;
+package core.controllers.flights;
 
 import core.controllers.utils.Response;
 import core.controllers.utils.Status;
@@ -27,7 +27,7 @@ public class FlightController {
             String departureYear, String departureMonth, String departureDay, String departureHour, String departureMinute, String hoursDurationArrival,
             String minutesDurationArrival, String hoursDurationScale, String minutesDurationScale) {
         Pattern ID_PATTERN = Pattern.compile("^[A-Z]{3}\\d{3}$");
-
+        Flight flight;
         Location departureLocation = null;
         Location scaleLocation = null;
         Location arrivalLocation = null;
@@ -107,8 +107,8 @@ public class FlightController {
                 return new Response("Invalid flight ID format found", Status.BAD_REQUEST);
             }
 
-            for (Flight flight : flights) {
-                if (flight.getId().equals(id)) {
+            for (Flight flightt : flights) {
+                if (flightt.getId().equals(id)) {
                     return new Response("A flight with this ID is already registered.", Status.BAD_REQUEST);
                 }
             }
@@ -183,8 +183,11 @@ public class FlightController {
             }
             if (scaleLocation == null & scaleLocationId.equals("Location")) {
                 // validar que se siga el formato xxxyyy
-                flightStorage.addItem(new Flight(id, plane, departureLocation, arrivalLocation, departureDate, hoursDurationArrival1, minutesDurationArrival1));
-                return new Response("Plane added successfully", Status.OK);
+                flight = new Flight(id, plane, departureLocation, arrivalLocation, departureDate, hoursDurationArrival1, minutesDurationArrival1);
+                flightStorage.addItem(flight);
+                plane.getFlights().add(flight);
+                
+                return new Response("Flight added successfully", Status.OK);
             } else if (scaleLocation == null) {
                 return new Response("A Location with the scaleLocation ID is not registered.", Status.BAD_REQUEST);
             } else {
@@ -205,8 +208,11 @@ public class FlightController {
                 } catch (NumberFormatException e) {
                     return new Response("The Scale Minute must be numeric.", Status.BAD_REQUEST);
                 }
-                flightStorage.addItem(new Flight(id, plane, departureLocation, scaleLocation, arrivalLocation, departureDate, hoursDurationArrival1, minutesDurationArrival1, hoursDurationScale1, minutesDurationArrival1));
-                return new Response("Plane added successfully", Status.OK);
+
+                flight = new Flight(id, plane, departureLocation, scaleLocation, arrivalLocation, departureDate, hoursDurationArrival1, minutesDurationArrival1, hoursDurationScale1, minutesDurationArrival1);
+                flightStorage.addItem(flight);
+                plane.getFlights().add(flight);
+                return new Response("Flight added successfully", Status.OK);
             }
 
         } catch (NumberFormatException e) {

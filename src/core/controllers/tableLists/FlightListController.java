@@ -7,7 +7,6 @@ package core.controllers.tableLists;
 import core.controllers.utils.Response;
 import core.controllers.utils.Status;
 import core.models.Flight;
-import core.models.Passenger;
 import core.models.storages.FlightStorage;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -19,9 +18,9 @@ import javax.swing.table.DefaultTableModel;
  */
 public class FlightListController {
 
-    public static Response updateFlightList(DefaultTableModel model) {
+        public static Response updateFlightTable(DefaultTableModel model) {
         try {
-            model.setRowCount(0); // Limpiar el modelo
+            model.setRowCount(0);
             FlightStorage flightStorage = FlightStorage.getInstance();
             ArrayList<Flight> flights = flightStorage.getFlights();
 
@@ -29,25 +28,35 @@ public class FlightListController {
                 return new Response("The list is empty.", Status.NO_CONTENT);
             }
 
-            // Ordenar por Fecha de salida ascendente
             flights.sort(Comparator.comparing(Flight::getDepartureDate));
 
             for (Flight flight : flights) {
-                model.addRow(new Object[]{
-                    flight.getId(),
-                    flight.getDepartureLocation().getAirportId(),
-                    flight.getArrivalLocation().getAirportId(),
-                    flight.getScaleLocation().getAirportId(),
-                    flight.getDepartureDate(),
-                    flight.calculateArrivalDate(),
-                    flight.getPlane().getId(),
-                    flight.getNumPassengers(),});
+                if (flight.getScaleLocation() != null) {
+                    model.addRow(new Object[]{
+                        flight.getId(),
+                        flight.getDepartureLocation().getAirportId(),
+                        flight.getArrivalLocation().getAirportId(),
+                        flight.getScaleLocation().getAirportId(),
+                        flight.getDepartureDate(),
+                        flight.calculateArrivalDate(),
+                        flight.getPlane().getId(),
+                        flight.getNumPassengers(),});
+                } else {
+                    model.addRow(new Object[]{
+                        flight.getId(),
+                        flight.getDepartureLocation().getAirportId(),
+                        flight.getArrivalLocation().getAirportId(),
+                        (Object) "no aply",
+                        flight.getDepartureDate(),
+                        flight.calculateArrivalDate(),
+                        flight.getPlane().getId(),
+                        flight.getNumPassengers(),});
+                }
             }
-
-            return new Response("List updated successfully.", Status.OK);
+            return new Response("Data successfully added", Status.OK);
         } catch (Exception e) {
+            System.out.println(e);
             return new Response("Unexpected error", Status.INTERNAL_SERVER_ERROR);
         }
     }
-
 }

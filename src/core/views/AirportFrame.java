@@ -4,7 +4,7 @@
  */
 package core.views;
 
-import core.controllers.FlightController;
+import core.controllers.flights.FlightController;
 import core.controllers.LocationController;
 import core.models.Plane;
 import core.models.Passenger;
@@ -1774,7 +1774,7 @@ public class AirportFrame extends javax.swing.JFrame {
 
     private void btnRefreshAllFlightsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshAllFlightsActionPerformed
         // TODO add your handling code here:
-        Response response = FlightListController.updateFlightList((DefaultTableModel) tableAllFlights.getModel());
+        Response response = FlightListController.updateFlightTable((DefaultTableModel) tableAllFlights.getModel());
 
         if (response.getStatus() >= 500) {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);

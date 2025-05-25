@@ -20,7 +20,7 @@ import org.json.JSONException;
 
 /**
  *
- * @author Laura
+ * @author fvarelo and mlobol
  */
 public class AddJsonToStorage {
 
@@ -29,23 +29,21 @@ public class AddJsonToStorage {
             ReadJsonLocation jsonLocation = new ReadJsonLocation();
             ArrayList<Location> locations = jsonLocation.read("src\\json\\locations.json");
 
+            ReadJsonPlane jsonPlanes = new ReadJsonPlane();
+            ArrayList<Plane> planes = jsonPlanes.read("src\\json\\planes.json");
+            
             ReadJsonFlight jsonFlights = new ReadJsonFlight();
             ArrayList<Flight> flights = jsonFlights.read("src\\json\\flights.json");
 
             ReadJsonPassenger jsonPassenger = new ReadJsonPassenger();
             ArrayList<Passenger> passengers = jsonPassenger.read("src\\json\\passengers.json");
 
-            ReadJsonPlane jsonPlanes = new ReadJsonPlane();
-            ArrayList<Plane> planes = jsonPlanes.read("src\\json\\planes.json");
-
             return new Response("File upload successfully", Status.OK);
         } catch (IOException | JSONException e) {
             return new Response("Problems with reading files", Status.INTERNAL_SERVER_ERROR);
-//        }catch(Exception e){
-//            System.out.println(e);
-//            return new Response("Unexpected error", Status.INTERNAL_SERVER_ERROR);
-//        }
-
+        } catch (Exception e) {
+            return new Response("Unexpected error", Status.INTERNAL_SERVER_ERROR);
         }
+
     }
 }
