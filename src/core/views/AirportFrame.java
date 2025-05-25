@@ -12,6 +12,9 @@ import core.models.Location;
 import core.models.Flight;
 import core.controllers.PassengerController;
 import core.controllers.PlaneController;
+import core.controllers.UpdatePassengerController;
+import core.controllers.flights.AddFlightToPassengerController;
+import core.controllers.flights.DelayFlightController;
 import core.controllers.tableLists.FlightListController;
 import core.controllers.tableLists.LocationListController;
 import core.controllers.tableLists.PassengerListController;
@@ -23,7 +26,6 @@ import core.controllers.utils.addItemToComboBox.AddLocationToComboBox;
 import core.controllers.utils.addItemToComboBox.AddPassengerToComboBox;
 import core.controllers.utils.addItemToComboBox.AddPlaneToComboBox;
 import java.awt.Color;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -1672,71 +1674,68 @@ public class AirportFrame extends javax.swing.JFrame {
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:
-        long id = Long.parseLong(txtUpdateUserId.getText());
+        String id = txtUpdateUserId.getText();
         String firstname = txtUpdateFirstName.getText();
         String lastname = txtUpdateLastName.getText();
-        int year = Integer.parseInt(txtUpdateYear.getText());
-        int month = Integer.parseInt(cboxMonth.getItemAt(cboxUpdateMonth.getSelectedIndex()));
-        int day = Integer.parseInt(cboxDay.getItemAt(cboxUpdateDay.getSelectedIndex()));
-        int phoneCode = Integer.parseInt(txtUpdatePhoneCode.getText());
-        long phone = Long.parseLong(txtUpdatePhoneNumber.getText());
+        String year = txtUpdateYear.getText();
+        String month = cboxUpdateMonth.getItemAt(cboxUpdateMonth.getSelectedIndex());
+        String day = cboxUpdateDay.getItemAt(cboxUpdateDay.getSelectedIndex());
+        String phoneCode = txtUpdatePhoneCode.getText();
+        String phone = txtUpdatePhoneNumber.getText();
         String country = txtUpdateCountry.getText();
 
-        LocalDate birthDate = LocalDate.of(year, month, day);
-
-        Passenger passenger = null;
-        for (Passenger p : this.passengers) {
-            if (p.getId() == id) {
-                passenger = p;
-            }
+        Response response = UpdatePassengerController.passengerUpdateRegistration(id, firstname, lastname, year, month, day, phoneCode, phone, country);
+        if (response.getStatus() >= 500) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
+        } else if (response.getStatus() >= 400) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
+            txtUpdateUserId.setText("");
+            txtUpdateFirstName.setText("");
+            txtUpdateLastName.setText("");
+            txtUpdateYear.setText("");
+            cboxUpdateMonth.setSelectedIndex(0);
+            cboxUpdateDay.setSelectedIndex(0);
+            txtUpdatePhoneCode.setText("");
+            txtUpdatePhoneNumber.setText("");
+            txtUpdateCountry.setText("");
         }
-
-        passenger.setFirstname(firstname);
-        passenger.setLastname(lastname);
-        passenger.setBirthDate(birthDate);
-        passenger.setCountryPhoneCode(phoneCode);
-        passenger.setPhone(phone);
-        passenger.setCountry(country);
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnAddToFlightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddToFlightActionPerformed
-        // TODO add your handling code here:
-        long passengerId = Long.parseLong(btnAddFlightUserId.getText());
+        String passengerId = btnAddFlightUserId.getText();
         String flightId = cboxAddFlight.getItemAt(cboxAddFlight.getSelectedIndex());
 
-        Passenger passenger = null;
-        Flight flight = null;
-
-        for (Passenger p : this.passengers) {
-            if (p.getId() == passengerId) {
-                passenger = p;
-            }
+        Response response = AddFlightToPassengerController.addFlight(passengerId, flightId);
+        if (response.getStatus() >= 500) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
+        } else if (response.getStatus() >= 400) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
+            btnAddFlightUserId.setText("");
+            cboxAddFlight.setSelectedIndex(0);
         }
-
-        for (Flight f : this.flights) {
-            if (flightId.equals(f.getId())) {
-                flight = f;
-            }
-        }
-
-        passenger.addFlight(flight);
-        flight.addPassenger(passenger);
     }//GEN-LAST:event_btnAddToFlightActionPerformed
 
     private void btnDelayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDelayActionPerformed
         // TODO add your handling code here:
         String flightId = cboxDelayFlightId.getItemAt(cboxDelayFlightId.getSelectedIndex());
-        int hours = Integer.parseInt(cboxDelayHour.getItemAt(cboxDelayHour.getSelectedIndex()));
-        int minutes = Integer.parseInt(cboxDelayMinute.getItemAt(cboxDelayMinute.getSelectedIndex()));
+        String hours = cboxDelayHour.getItemAt(cboxDelayHour.getSelectedIndex());
+        String minutes = cboxDelayMinute.getItemAt(cboxDelayMinute.getSelectedIndex());
 
-        Flight flight = null;
-        for (Flight f : this.flights) {
-            if (flightId.equals(f.getId())) {
-                flight = f;
-            }
+        Response response = DelayFlightController.delayFlight(flightId, hours, minutes);
+        if (response.getStatus() >= 500) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
+        } else if (response.getStatus() >= 400) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
+            cboxDelayFlightId.setSelectedIndex(0);
+            cboxDelayHour.setSelectedIndex(0);
+            cboxDelayMinute.setSelectedIndex(0);
         }
-
-        flight.delay(hours, minutes);
     }//GEN-LAST:event_btnDelayActionPerformed
 
     private void btnRefreshMyFlightsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshMyFlightsActionPerformed
