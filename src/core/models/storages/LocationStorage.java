@@ -33,6 +33,10 @@ public class LocationStorage extends Storage{
         }
     }
 
+    public void setLocations(ArrayList<Location> locations) {
+        this.locations = locations;
+    }
+
     public ArrayList<Location> getLocations() {
         return this.locations;
     }

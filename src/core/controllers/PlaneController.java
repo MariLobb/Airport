@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 
 /**
  *
- * @author MARIA LUCIA LOBO
+ * @author fvarelo and mlobol
  */
 public class PlaneController {
 

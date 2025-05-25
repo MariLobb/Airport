@@ -14,7 +14,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author Allison Ruiz
+ * @author fvarelo and mlobol
  */
 public class LocationListController {
 

@@ -35,6 +35,10 @@ public class PassengerStorage extends Storage {
         }
     }
 
+    public void setPassengers(ArrayList<Passenger> passengers) {
+        this.passengers = passengers;
+    }
+
     public ArrayList<Passenger> getPassengers() {
         return this.passengers;
     }

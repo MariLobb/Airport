@@ -8,7 +8,7 @@ package core.controllers.tableLists;
 
 /**
  *
- * @author Allison Ruiz
+ * @author fvarelo and mlobol
  */
 import core.controllers.utils.Response;
 import core.controllers.utils.Status;

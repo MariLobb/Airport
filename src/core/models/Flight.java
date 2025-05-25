@@ -52,7 +52,7 @@ public class Flight {
         this.hoursDurationScale = hoursDurationScale;
         this.minutesDurationScale = minutesDurationScale;
         
-        this.plane.addFlight(this);
+//        this.plane.addFlight(this);
     }
     
     public void addPassenger(Passenger passenger) {

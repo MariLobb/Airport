@@ -13,7 +13,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author Allison Ruiz
+ * @author fvarelo and mlobol
  */
 import java.util.Comparator;
 

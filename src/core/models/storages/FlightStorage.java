@@ -27,6 +27,10 @@ public class FlightStorage extends Storage {
         return instance;
     }
 
+    public void setFlights(ArrayList<Flight> flights) {
+        this.flights = flights;
+    }
+
     @Override
     public void addItem(Object flight) {
         if (!this.flights.contains((Flight) flight)) {

@@ -17,6 +17,11 @@ import core.controllers.tableLists.LocationListController;
 import core.controllers.tableLists.PassengerListController;
 import core.controllers.tableLists.PlaneListController;
 import core.controllers.utils.Response;
+import core.controllers.utils.addItemToComboBox.AddFlightToComboBox;
+import core.controllers.utils.addItemToComboBox.AddJsonToStorage;
+import core.controllers.utils.addItemToComboBox.AddLocationToComboBox;
+import core.controllers.utils.addItemToComboBox.AddPassengerToComboBox;
+import core.controllers.utils.addItemToComboBox.AddPlaneToComboBox;
 import java.awt.Color;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -49,11 +54,24 @@ public class AirportFrame extends javax.swing.JFrame {
         this.setBackground(new Color(0, 0, 0, 0));
         this.setLocationRelativeTo(null);
 
+        this.uploadJSON();
+        this.uploadItemsToComboBox();
         this.generateMonths();
         this.generateDays();
         this.generateHours();
         this.generateMinutes();
         this.blockPanels();
+    }
+
+    private void uploadJSON() {
+        Response response = AddJsonToStorage.addJson();
+        if (response.getStatus() >= 500) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
+        } else if (response.getStatus() >= 400) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     private void blockPanels() {
@@ -99,6 +117,17 @@ public class AirportFrame extends javax.swing.JFrame {
         }
     }
 
+    private void uploadItemsToComboBox() {
+        Response responsePassenger = AddPassengerToComboBox.addItems(this.cBoxUserSelect);
+        Response responsePlane = AddPlaneToComboBox.addItems(this.cboxPlane);
+        Response responseFlight = AddFlightToComboBox.addItems(this.cboxAddFlight);
+        Response responseFlight2 = AddFlightToComboBox.addItems(this.cboxDelayFlightId);
+        Response responseLocation1 = AddLocationToComboBox.addItems(this.cboxArrivalLocation);
+        Response responseLocation2 = AddLocationToComboBox.addItems(this.cboxDepartureLocation);
+        Response responseLocation3 = AddLocationToComboBox.addItems(this.cboxScaleLocation);
+
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -115,7 +144,7 @@ public class AirportFrame extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         user = new javax.swing.JRadioButton();
         administrator = new javax.swing.JRadioButton();
-        userSelect = new javax.swing.JComboBox<>();
+        cBoxUserSelect = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -316,14 +345,14 @@ public class AirportFrame extends javax.swing.JFrame {
         });
         jPanel1.add(administrator, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 164, -1, -1));
 
-        userSelect.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
-        userSelect.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select User" }));
-        userSelect.addActionListener(new java.awt.event.ActionListener() {
+        cBoxUserSelect.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
+        cBoxUserSelect.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select User" }));
+        cBoxUserSelect.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                userSelectActionPerformed(evt);
+                cBoxUserSelectActionPerformed(evt);
             }
         });
-        jPanel1.add(userSelect, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 300, 130, -1));
+        jPanel1.add(cBoxUserSelect, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 300, 130, -1));
 
         jTabbedPane1.addTab("Administration", jPanel1);
 
@@ -1415,7 +1444,7 @@ public class AirportFrame extends javax.swing.JFrame {
     private void administratorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_administratorActionPerformed
         if (user.isSelected()) {
             user.setSelected(false);
-            userSelect.setSelectedIndex(0);
+            cBoxUserSelect.setSelectedIndex(0);
 
         }
         for (int i = 1; i < jTabbedPane1.getTabCount(); i++) {
@@ -1423,6 +1452,7 @@ public class AirportFrame extends javax.swing.JFrame {
         }
         jTabbedPane1.setEnabledAt(5, false);
         jTabbedPane1.setEnabledAt(6, false);
+        jTabbedPane1.setEnabledAt(7, false);
     }//GEN-LAST:event_administratorActionPerformed
 
     private void userActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userActionPerformed
@@ -1486,7 +1516,7 @@ public class AirportFrame extends javax.swing.JFrame {
             txtPhoneCode.setText("");
             txtPhoneNumber.setText("");
             txtCountry.setText("");
-            this.userSelect.addItem(id);
+            this.cBoxUserSelect.addItem(id);
         }
 
     }//GEN-LAST:event_btnRegisterPassengerActionPerformed
@@ -1613,8 +1643,8 @@ public class AirportFrame extends javax.swing.JFrame {
         String hoursDurationsScale = cboxScaleHour.getItemAt(cboxScaleHour.getSelectedIndex());
         String minutesDurationsScale = cboxScaleMinute.getItemAt(cboxScaleMinute.getSelectedIndex());
 
-        Response response = FlightController.createFlight(id, planeId, departureLocationId, scaleLocationId, arrivalLocationId, year, departureLocationId,
-                day, hour, departureLocationId, hoursDurationsArrival, minutesDurationsArrival,
+        Response response = FlightController.createFlight(id, planeId, departureLocationId, scaleLocationId, arrivalLocationId, year, month,
+                day, hour, minutes, hoursDurationsArrival, minutesDurationsArrival,
                 hoursDurationsScale, minutesDurationsScale);
         if (response.getStatus() >= 500) {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
@@ -1711,7 +1741,7 @@ public class AirportFrame extends javax.swing.JFrame {
 
     private void btnRefreshMyFlightsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshMyFlightsActionPerformed
         // TODO add your handling code here:
-        long passengerId = Long.parseLong(userSelect.getItemAt(userSelect.getSelectedIndex()));
+        long passengerId = Long.parseLong(cBoxUserSelect.getItemAt(cBoxUserSelect.getSelectedIndex()));
 
         Passenger passenger = null;
         for (Passenger p : this.passengers) {
@@ -1785,10 +1815,10 @@ public class AirportFrame extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_btnExitActionPerformed
 
-    private void userSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userSelectActionPerformed
+    private void cBoxUserSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cBoxUserSelectActionPerformed
         try {
-            String id = userSelect.getSelectedItem().toString();
-            if (!id.equals(userSelect.getItemAt(0))) {
+            String id = cBoxUserSelect.getSelectedItem().toString();
+            if (!id.equals(cBoxUserSelect.getItemAt(0))) {
                 txtUpdateUserId.setText(id);
                 btnAddFlightUserId.setText(id);
             } else {
@@ -1797,7 +1827,7 @@ public class AirportFrame extends javax.swing.JFrame {
             }
         } catch (Exception e) {
         }
-    }//GEN-LAST:event_userSelectActionPerformed
+    }//GEN-LAST:event_cBoxUserSelectActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1819,6 +1849,7 @@ public class AirportFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnRefreshPlanes;
     private javax.swing.JButton btnRegisterPassenger;
     private javax.swing.JButton btnUpdate;
+    private javax.swing.JComboBox<String> cBoxUserSelect;
     private javax.swing.JComboBox<String> cboxAddFlight;
     private javax.swing.JComboBox<String> cboxArrivalHour;
     private javax.swing.JComboBox<String> cboxArrivalLocation;
@@ -1942,6 +1973,5 @@ public class AirportFrame extends javax.swing.JFrame {
     private javax.swing.JTextField txtUpdateYear;
     private javax.swing.JTextField txtYear;
     private javax.swing.JRadioButton user;
-    private javax.swing.JComboBox<String> userSelect;
     // End of variables declaration//GEN-END:variables
 }

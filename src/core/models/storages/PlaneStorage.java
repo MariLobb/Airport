@@ -33,6 +33,10 @@ public class PlaneStorage extends Storage{
         }
     }
 
+    public void setPlanes(ArrayList<Plane> planes) {
+        this.planes = planes;
+    }
+
     public ArrayList<Plane> getPlanes() {
         return this.planes;
     }

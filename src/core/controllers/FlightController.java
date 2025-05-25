@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
 
 /**
  *
- * @author MARIA LUCIA LOBO
+ * @author fvarelo and mlobol
  */
 public class FlightController {
 
@@ -153,7 +153,7 @@ public class FlightController {
                 return new Response("The Arrival Minute must be numeric.", Status.BAD_REQUEST);
             }
             for (Plane plane1 : planes) {
-                if (plane1.getId().equals(departureLocationId)) {
+                if (plane1.getId().equals(planeId)) {
                     plane = plane1;
                 }
 

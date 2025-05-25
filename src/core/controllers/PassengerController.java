@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author MARIA LUCIA LOBO
+ * @author fvarelo and mlobol
  */
 public class PassengerController {
 
