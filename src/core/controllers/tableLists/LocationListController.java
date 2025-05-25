@@ -25,7 +25,7 @@ public class LocationListController {
             ArrayList<Location> locations = locationStorage.getLocations();
 
             if (locations == null || locations.isEmpty()) {
-                return new Response("The list is empty.", Status.NO_CONTENT);
+                return new Response("The list is empty.", Status.NO_CONTENT, locations.clone());
             }
 
             // Ordenar por ID ascendente
@@ -40,7 +40,7 @@ public class LocationListController {
                 });
             }
 
-            return new Response("List updated successfully.", Status.OK);
+            return new Response("List updated successfully.", Status.OK,  locations.clone());
         } catch (Exception e) {
             return new Response("Unexpected error", Status.INTERNAL_SERVER_ERROR);
         }

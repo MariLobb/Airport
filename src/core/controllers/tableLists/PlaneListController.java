@@ -28,7 +28,7 @@ public class PlaneListController {
             ArrayList<Plane> planes = planeStorage.getPlanes();
 
             if (planes == null || planes.isEmpty()) {
-                return new Response("The list is empty.", Status.NO_CONTENT);
+                return new Response("The list is empty.", Status.NO_CONTENT, planes.clone());
             }
 
 
@@ -46,7 +46,7 @@ public class PlaneListController {
                 });
             }
 
-            return new Response("List updated successfully.", Status.OK);
+            return new Response("List updated successfully.", Status.OK, planes.clone());
         } catch (Exception e) {
             return new Response("Unexpected error", Status.INTERNAL_SERVER_ERROR);
         }

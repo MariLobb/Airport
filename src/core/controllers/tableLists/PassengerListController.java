@@ -26,7 +26,7 @@ public class PassengerListController {
             ArrayList<Passenger> passengers = passengerStorage.getPassengers();
 
             if (passengers == null || passengers.isEmpty()) {
-                return new Response("The list is empty.", Status.NO_CONTENT);
+                return new Response("The list is empty.", Status.NO_CONTENT, passengers.clone());
             }
 
             // Ordenar por ID ascendente
@@ -44,7 +44,7 @@ public class PassengerListController {
                 });
             }
 
-            return new Response("List updated successfully.", Status.OK);
+            return new Response("List updated successfully.", Status.OK, passengers.clone());
         } catch (Exception e) {
             return new Response("Unexpected error", Status.INTERNAL_SERVER_ERROR);
         }
