@@ -1480,23 +1480,7 @@ public class AirportFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_userActionPerformed
 
     private void btnRegisterPassengerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterPassengerActionPerformed
-        // TODO add your handling code here:
-////        long id = Long.parseLong(txtPassengerId.getText());
-////        String firstname = txtFirstName.getText();
-////        String lastname = txtLastName.getText();
-////        int year = Integer.parseInt(txtYear.getText());
-////        int month = Integer.parseInt(cboxMonth.getItemAt(cboxMonth.getSelectedIndex()));
-////        int day = Integer.parseInt(cboxDay.getItemAt(cboxDay.getSelectedIndex()));
-////        int phoneCode = Integer.parseInt(txtPhoneCode.getText());
-////        long phone = Long.parseLong(txtPhoneNumber.getText());
-////        String country = txtCountry.getText();
-//
-//        LocalDate birthDate = LocalDate.of(year, month, day);
-//
-//        this.passengers.add(new Passenger(id, firstname, lastname, birthDate, phoneCode, phone, country));
-//        this.userSelect.addItem("" + id);
 
-        // TODO add your handling code here:
         String id = txtPassengerId.getText();
         String firstname = txtFirstName.getText();
         String lastname = txtLastName.getText();
@@ -1524,13 +1508,12 @@ public class AirportFrame extends javax.swing.JFrame {
             txtPhoneCode.setText("");
             txtPhoneNumber.setText("");
             txtCountry.setText("");
-            this.cBoxUserSelect.addItem(id);
+            AddPassengerToComboBox.addItems(this.cBoxUserSelect);
         }
 
     }//GEN-LAST:event_btnRegisterPassengerActionPerformed
 
     private void btnCreateAirplaneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateAirplaneActionPerformed
-        // TODO add your handling code here:
         String id = txtAirplaneId.getText();
         String brand = txtBrand.getText();
         String model = txtModel.getText();
@@ -1550,15 +1533,12 @@ public class AirportFrame extends javax.swing.JFrame {
             txtModel.setText("");
             txtMaxCapacity.setText("");
             txtAirline.setText("");
-            this.cboxPlane.addItem(id);
+            AddPassengerToComboBox.addItems(this.cboxPlane);
         }
     }//GEN-LAST:event_btnCreateAirplaneActionPerformed
 
     private void btnCreateLocationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateLocationActionPerformed
-        // TODO add your handling code here:
 
-//        this.locations.add(new Location(id, name, city, country, latitude, longitude));
-        // TODO add your handling code here:
         String id = txtAirportId.getText();
         String name = txtAirportName.getText();
         String city = txtAirportCity.getText();
@@ -1574,20 +1554,22 @@ public class AirportFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
-            txtAirplaneId.setText("");
-            txtBrand.setText("");
+            txtAirportId.setText("");
+            txtAirportName.setText("");
             txtModel.setText("");
-            txtMaxCapacity.setText("");
-            txtAirline.setText("");
-            this.cboxDepartureLocation.addItem(id);
-            this.cboxArrivalLocation.addItem(id);
-            this.cboxScaleLocation.addItem(id);
+            txtAirportCountry.setText("");
+            txtAirportCity.setText("");
+            txtAirportLatitude.setText("");
+            txtAirportLongitude.setText("");
+            AddPassengerToComboBox.addItems(this.cboxDepartureLocation);
+            AddPassengerToComboBox.addItems(this.cboxArrivalLocation);
+            AddPassengerToComboBox.addItems(this.cboxScaleLocation);
         }
 
     }//GEN-LAST:event_btnCreateLocationActionPerformed
 
     private void btnCreateFlightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateFlightActionPerformed
-      
+
         String id = txtFlightId.getText();
         String planeId = cboxPlane.getItemAt(cboxPlane.getSelectedIndex());
         String departureLocationId = cboxDepartureLocation.getItemAt(cboxDepartureLocation.getSelectedIndex());
@@ -1626,8 +1608,8 @@ public class AirportFrame extends javax.swing.JFrame {
             cboxArrivalMinute.setSelectedIndex(0);
             cboxScaleHour.setSelectedIndex(0);
             cboxScaleMinute.setSelectedIndex(0);
-            this.cboxAddFlight.addItem(id);
-            
+            AddPassengerToComboBox.addItems(this.cboxAddFlight);
+
         }
     }//GEN-LAST:event_btnCreateFlightActionPerformed
 
@@ -1697,15 +1679,14 @@ public class AirportFrame extends javax.swing.JFrame {
     private void btnRefreshMyFlightsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshMyFlightsActionPerformed
         // TODO add your handling code here:
         Response response = MyFlightsListController.updateMyFlightsList((DefaultTableModel) tableMyFlights.getModel(), cBoxUserSelect.getItemAt(cBoxUserSelect.getSelectedIndex()));
-        
-        
-         if (response.getStatus() >= 500) {
+
+        if (response.getStatus() >= 500) {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
         } else if (response.getStatus() >= 400) {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
-           
+
         }
     }//GEN-LAST:event_btnRefreshMyFlightsActionPerformed
 

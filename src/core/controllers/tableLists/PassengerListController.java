@@ -6,8 +6,9 @@ package core.controllers.tableLists;
 
 import core.controllers.utils.Response;
 import core.controllers.utils.Status;
-import core.models.passenger.GenerateFullPhone;
+import core.models.passengerUtils.GenerateFullPhone;
 import core.models.Passenger;
+import core.models.passengerUtils.GenerateFullName;
 import core.models.storages.PassengerStorage;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
@@ -36,7 +37,7 @@ public class PassengerListController {
             for (Passenger passenger : passengers) {
                 model.addRow(new Object[]{
                     passenger.getId(),
-                    passenger.getFirstname(),
+                    GenerateFullName.getFullname(passenger),
                     passenger.getBirthDate(),
                     passenger.calculateAge(),
                     GenerateFullPhone.generateFullPhone(passenger),
