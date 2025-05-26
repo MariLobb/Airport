@@ -8,7 +8,6 @@ import core.controllers.utils.Response;
 import core.controllers.utils.Status;
 import core.models.Flight;
 import core.models.Passenger;
-import core.models.storages.FlightStorage;
 import core.models.storages.PassengerStorage;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -49,8 +48,8 @@ public class MyFlightsListController {
             for (Flight flight : flights) {
                 model.addRow(new Object[]{
                     flight.getId(),
-                    flight.getDepartureLocation().getAirportId(),
-                    flight.getArrivalLocation().getAirportId(),});
+                    flight.getDepartureDate(),
+                    flight.calculateArrivalDate(),});
             }
             
             return new Response("Data successfully added", Status.OK, flights.clone());

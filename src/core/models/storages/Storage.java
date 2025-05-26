@@ -8,10 +8,7 @@ package core.models.storages;
  *
  * @author fvarelo and mlobol
  */
-public abstract class Storage {
+public abstract interface Storage {
 
-    public Storage() {
-    }
-    
     public abstract void addItem(Object object);
 }

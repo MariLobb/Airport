@@ -10,6 +10,8 @@ import core.models.Flight;
 import core.models.Passenger;
 import core.models.storages.FlightStorage;
 import core.models.storages.PassengerStorage;
+import core.models.add.AddFlight;
+import core.models.add.AddPassenger;
 import java.util.ArrayList;
 
 /**
@@ -17,7 +19,8 @@ import java.util.ArrayList;
  * @author fvarelo and mlobol
  */
 public class AddFlightToPassengerController {
-public static Response addFlight(String id, String idFlight) {
+
+    public static Response addFlight(String id, String idFlight) {
         PassengerStorage passengerRegister = PassengerStorage.getInstance();
         ArrayList<Passenger> passengers = passengerRegister.getPassengers();
         FlightStorage flightRegister = FlightStorage.getInstance();
@@ -62,14 +65,14 @@ public static Response addFlight(String id, String idFlight) {
             if (passengerSelected.getFlights().contains(flightSelected)) {
                 return new Response("This flight already exist on this passenger", Status.BAD_REQUEST);
             }
-
-            flightSelected.getPassengers().add(passengerSelected);
-            passengerSelected.getFlights().add(flightSelected);
+            
+            AddFlight.addFlight(passengerSelected.getFlights(), flightSelected);
+            AddPassenger.addPassenger(flightSelected.getPassengers(), passengerSelected);
 
             return new Response("Flight added successfully", Status.OK);
         } catch (Exception ex) {
             return new Response("Unexpected error", Status.INTERNAL_SERVER_ERROR);
         }
-    } 
-  
+    }
+
 }

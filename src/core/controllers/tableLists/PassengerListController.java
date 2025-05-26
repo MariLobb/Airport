@@ -6,6 +6,7 @@ package core.controllers.tableLists;
 
 import core.controllers.utils.Response;
 import core.controllers.utils.Status;
+import core.models.passenger.GenerateFullPhone;
 import core.models.Passenger;
 import core.models.storages.PassengerStorage;
 import java.util.ArrayList;
@@ -38,10 +39,9 @@ public class PassengerListController {
                     passenger.getFirstname(),
                     passenger.getBirthDate(),
                     passenger.calculateAge(),
-                    passenger.generateFullPhone(),
+                    GenerateFullPhone.generateFullPhone(passenger),
                     passenger.getCountry(),
-                    passenger.getNumFlights()
-                });
+                    passenger.getFlights().size(),});
             }
 
             return new Response("List updated successfully.", Status.OK, passengers.clone());

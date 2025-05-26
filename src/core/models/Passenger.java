@@ -94,21 +94,11 @@ public class Passenger {
     public void setCountry(String country) {
         this.country = country;
     }
-    
-    public String getFullname() {
-        return firstname + " " + lastname;
-    }
-    
-    public String generateFullPhone() {
-        return "+" + countryPhoneCode + " " + phone;
-    }
-    
+     
     public int calculateAge() {
         return Period.between(birthDate, LocalDate.now()).getYears();
     }
     
-    public int getNumFlights() {
-        return flights.size();
-    }
+
     
 }

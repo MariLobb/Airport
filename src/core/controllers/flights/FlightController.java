@@ -186,7 +186,7 @@ public class FlightController {
                 flight = new Flight(id, plane, departureLocation, arrivalLocation, departureDate, hoursDurationArrival1, minutesDurationArrival1);
                 flightStorage.addItem(flight);
                 plane.getFlights().add(flight);
-                
+
                 return new Response("Flight added successfully", Status.OK);
             } else if (scaleLocation == null) {
                 return new Response("A Location with the scaleLocation ID is not registered.", Status.BAD_REQUEST);
@@ -208,7 +208,9 @@ public class FlightController {
                 } catch (NumberFormatException e) {
                     return new Response("The Scale Minute must be numeric.", Status.BAD_REQUEST);
                 }
-
+                if (departureDate.plusHours(hoursDurationArrival1).plusMinutes(minutesDurationArrival1).equals(departureDate)) {
+                    return new Response("Time of flight must be greater that 0", Status.BAD_REQUEST);
+                }
                 flight = new Flight(id, plane, departureLocation, scaleLocation, arrivalLocation, departureDate, hoursDurationArrival1, minutesDurationArrival1, hoursDurationScale1, minutesDurationArrival1);
                 flightStorage.addItem(flight);
                 plane.getFlights().add(flight);

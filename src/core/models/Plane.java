@@ -4,7 +4,6 @@
  */
 package core.models;
 
-import core.models.Flight;
 import java.util.ArrayList;
 
 /**
@@ -27,10 +26,6 @@ public class Plane {
         this.maxCapacity = maxCapacity;
         this.airline = airline;
         this.flights = new ArrayList<>();
-    }
-
-    public void addFlight(Flight flight) {
-        this.flights.add(flight);
     }
 
     public String getId() {

@@ -116,7 +116,7 @@ public class PassengerController {
             if (phone1 < 0) {
                 return new Response("The Phone must be a number greater than 0", Status.BAD_REQUEST);
             }
-
+            
             passengerStorage.addItem(new Passenger(id1, firstname, lastname, birthDate, phoneCode1, phone1, country));
             return new Response("Passenger added successfully", Status.OK);
 

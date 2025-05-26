@@ -9,6 +9,7 @@ import core.controllers.utils.Status;
 import core.models.Location;
 import core.models.storages.LocationStorage;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -21,6 +22,7 @@ public class LocationController {
         double airportLongitude1;
         LocationStorage locationStorage = LocationStorage.getInstance();
         ArrayList<Location> locations = locationStorage.getLocations();
+        Pattern idPattern = Pattern.compile("^[A-Z]{3}$");
 
         try {
             if (airportId.equals("")) {
@@ -51,7 +53,7 @@ public class LocationController {
                 }
             }
 
-            if (airportId.length() != 3) {
+            if (airportId.length() != 3 || !idPattern.matcher(airportId).matches()) {
                 return new Response("The ID must have 3 uppercase letters", Status.BAD_REQUEST);
             }
 
@@ -64,6 +66,11 @@ public class LocationController {
                 if (airportLatitude1 < -90 | airportLatitude1 > 90) {
                     return new Response("The airport latitude must be in the range [-90,90].", Status.BAD_REQUEST);
                 }
+                String[] parts = Double.toString(airportLatitude1).split("\\.");
+
+                if (!(parts.length < 2 || parts[1].length() <= 4)) {
+                    return new Response("The airport latitude must have a maximum of 4 decimal places.", Status.BAD_REQUEST);
+                }
             } catch (NumberFormatException e) {
                 return new Response("The airport latitude must be numeric.", Status.BAD_REQUEST);
             }
@@ -73,10 +80,14 @@ public class LocationController {
                 if (airportLongitude1 < -180 | airportLongitude1 > 180) {
                     return new Response("The airport longitude must be in the range [-180,180].", Status.BAD_REQUEST);
                 }
+                String[] parts = Double.toString(airportLongitude1).split("\\.");
+
+                if (!(parts.length < 2 || parts[1].length() <= 4)) {
+                    return new Response("The airport longitude must have a maximum of 4 decimal places.", Status.BAD_REQUEST);
+                }
             } catch (NumberFormatException e) {
                 return new Response("The airport longitude must be numeric.", Status.BAD_REQUEST);
             }
-            airportLongitude1 = Double.parseDouble(airportLongitude);
 
             locationStorage.addItem(new Location(airportId, airportName, airportCity, airportCountry, airportLatitude1, airportLongitude1));
             return new Response("Location added successfully", Status.OK);

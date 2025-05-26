@@ -18,7 +18,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class FlightListController {
 
-        public static Response updateFlightTable(DefaultTableModel model) {
+    public static Response updateFlightTable(DefaultTableModel model) {
         try {
             model.setRowCount(0);
             FlightStorage flightStorage = FlightStorage.getInstance();
@@ -40,7 +40,7 @@ public class FlightListController {
                         flight.getDepartureDate(),
                         flight.calculateArrivalDate(),
                         flight.getPlane().getId(),
-                        flight.getNumPassengers(),});
+                        flight.getPassengers().size(),});
                 } else {
                     model.addRow(new Object[]{
                         flight.getId(),
@@ -50,7 +50,7 @@ public class FlightListController {
                         flight.getDepartureDate(),
                         flight.calculateArrivalDate(),
                         flight.getPlane().getId(),
-                        flight.getNumPassengers(),});
+                        flight.getPassengers().size(),});
                 }
             }
             return new Response("Data successfully added", Status.OK, flights.clone());
