@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author MARIA LUCIA LOBO
+ * @author fvarelo and mlobol
  */
 public class LocationStorage extends Storage{
     private static LocationStorage instance;

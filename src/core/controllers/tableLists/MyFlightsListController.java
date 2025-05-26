@@ -4,10 +4,59 @@
  */
 package core.controllers.tableLists;
 
+import core.controllers.utils.Response;
+import core.controllers.utils.Status;
+import core.models.Flight;
+import core.models.Passenger;
+import core.models.storages.FlightStorage;
+import core.models.storages.PassengerStorage;
+import java.util.ArrayList;
+import java.util.Comparator;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
- * @author MARIA LUCIA LOBO
+ * @author fvarelo and mlobol
  */
 public class MyFlightsListController {
     
+    public static Response updateMyFlightsList(DefaultTableModel model, String passengerId) {
+        try {
+            model.setRowCount(0);
+            PassengerStorage passengerStorage = PassengerStorage.getInstance();
+            ArrayList<Passenger> passengers = passengerStorage.getPassengers();
+            Long idLong;
+            ArrayList<Flight> flights = new ArrayList<>();
+
+            try {
+                idLong = Long.parseLong(passengerId);
+            } catch (NumberFormatException ex) {
+                return new Response("Choose a user id on administration", Status.BAD_REQUEST);
+            }
+
+            for (Passenger passenger : passengers) {
+                if (passenger.getId() == idLong) {
+                    flights = passenger.getFlights();
+                }
+            }
+
+            if (flights == null || flights.isEmpty()) {
+                return new Response("The list is empty.", Status.NO_CONTENT, flights.clone());
+            }
+
+            flights.sort(Comparator.comparing(Flight::getDepartureDate));
+
+            for (Flight flight : flights) {
+                model.addRow(new Object[]{
+                    flight.getId(),
+                    flight.getDepartureLocation().getAirportId(),
+                    flight.getArrivalLocation().getAirportId(),});
+            }
+            
+            return new Response("Data successfully added", Status.OK, flights.clone());
+        } catch (Exception e) {
+            System.out.println(e);
+            return new Response("Unexpected error", Status.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

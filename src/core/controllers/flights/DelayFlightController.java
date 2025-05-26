@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Laura
+ * @author fvarelo and mlobol
  */
 public class DelayFlightController {
 
